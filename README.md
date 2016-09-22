@@ -1,5 +1,6 @@
 # Powerball_Greenphire
 Powerball project for Greenphire
+
 Author: Justin MacIntosh
 
 A project designed to emulate employees working together to determine which numbers they will invest in purchasing for Powerball based on each of their own personal favorite numbers.
