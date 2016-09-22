@@ -1,4 +1,4 @@
-# Powerball_Greenphire
+# Powerball_Greenphire for Python 3.X
 Powerball project for Greenphire
 
 Author: Justin MacIntosh
