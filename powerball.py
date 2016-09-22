@@ -4,8 +4,12 @@
 import operator
 import random
 
-#HELPER FUNCTIONS
+#GLOBALS
+POWERBALL_NUMBER = 6 #Powerball is the 6th number
+NON_POWERBALL_MAX = 69
+POWERBALL_MAX = 26
 
+#HELPER FUNCTIONS
 #Increment dictionary value
 #If value not found, then set the value to 1
 def increment_include(dict, key):
@@ -17,15 +21,15 @@ def increment_include(dict, key):
 #User Input Branching
 def ask_for_number(current_num, numbers_picked):
 	number_chosen = 0
-	if (current_num < 6): #Non-Powerball
+	if (current_num < POWERBALL_NUMBER): #Non-Powerball
 		if (current_num == 1):
 			number_chosen = int(input("Enter Number #" + str(current_num) + "(1-69): "))
 		else:
 			number_chosen = int(input("Enter Number #" + 
-					str(current_num) + "(1-69) excluding [" + 
+					str(current_num) + "(1-" + str(NON_POWERBALL_MAX) + ") excluding [" + 
 					', '.join(str(num) for num in numbers_picked) + "]: "))
 	else: #Powerball
-		number_chosen = int(input("Enter Powerball Number(1-26): "))
+		number_chosen = int(input("Enter Powerball Number(1-" + str(POWERBALL_MAX) + "): "))
 	return number_chosen
 
 #Choose max value of a dictionary
@@ -45,9 +49,9 @@ def choose_max_value(cur_num, dict, powerball):
 		return max_key.replace(cur_num + "-", "")
 	else: #When tied, return a random number based on if it's powerball or not
 		if(powerball):
-			return str(random.randint(1, 26))
+			return str(random.randint(1, POWERBALL_MAX))
 		else:
-			return str(random.randint(1, 69))
+			return str(random.randint(1, NON_POWERBALL_MAX))
 
 #MAIN METHOD
 powerball_dict = {}
@@ -66,7 +70,7 @@ while (True):
 	#Main while loop
 	current_num = 1
 	numbers_picked = []
-	while (current_num < 7):
+	while (current_num < POWERBALL_NUMBER+1):
 		while (True):
 			#Try/Except in case user gives a non-integer value
 			try:
@@ -75,8 +79,8 @@ while (True):
 				print("ERROR: Invalid Number")
 				continue
 				
-			if (current_num < 6): #Non-Powerball
-				if(number_chosen > 0 and number_chosen < 70 and not (number_chosen in numbers_picked)):
+			if (current_num < POWERBALL_NUMBER): #Non-Powerball
+				if(number_chosen > 0 and number_chosen < NON_POWERBALL_MAX+1 and not (number_chosen in numbers_picked)):
 					numbers_picked.append(number_chosen)
 					#number_dict includes values prefixed based on their position (i.e. 1-47, 4-28)
 					dict_key = str(current_num) + "-" + str(number_chosen)
@@ -85,7 +89,7 @@ while (True):
 				else:
 					print("ERROR: Value Not In Range OR Value Already Selected")
 			else: #Powerball
-				if(number_chosen > 0 and number_chosen < 27):
+				if(number_chosen > 0 and number_chosen < POWERBALL_MAX+1):
 					numbers_picked.append(number_chosen)
 					#Powerball is enetered into the number_dict with a P- prefix (i.e. P-34, P-4)
 					dict_key = "P-" + str(number_chosen)
@@ -101,7 +105,7 @@ while (True):
 
 final_result = []
 #Get the max duplicate for 1-5, and append it to the result
-for cur_num in range(1,6):
+for cur_num in range(1,POWERBALL_NUMBER):
 	cur_num_dict = dict((key, value) for (key, value) in number_dict.items() if key.startswith(str(cur_num) + "-"))
 	max_value = choose_max_value(str(cur_num), cur_num_dict, False)
 	final_result.append(max_value)
